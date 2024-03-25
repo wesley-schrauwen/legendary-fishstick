@@ -37,7 +37,7 @@ impl List {
 
         let next_node = match &self.head {
             Link::Empty => Link::Empty,
-            Link::To(node) => node.next
+            Link::To(node) => node.next.clone()
         };
 
         self.head = next_node;
