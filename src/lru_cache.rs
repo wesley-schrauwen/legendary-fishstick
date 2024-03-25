@@ -1,7 +1,8 @@
 use std::mem;
 
 struct List {
-    head: Link
+    head: Link,
+    tail: Link
 }
 
 #[derive(Clone)]
@@ -19,17 +20,26 @@ struct Node {
 impl List {
     fn new() -> Self {
        List {
-           head: Link::Empty
+           head: Link::Empty,
+           tail: Link::Empty
        }
     }
 
     pub fn push(&mut self, element: i32) {
-        let node = Node {
+        let node = Box::new(Node {
             element,
             next: self.head.clone()
-        };
+        });
 
-        self.head = Link::To(Box::new(node))
+        if (self.head == Link::Empty) {
+            self.head = Link::To(node);
+        } else if (self.tail == Link::Empty) {
+            let head_node = self.head.clone();
+            self.tail = head_node;
+            self.head = Link::To(node);
+        } else {
+            self.head = Link::To(node);
+        }
     }
 
     pub fn pop(&mut self) -> Option<i32> {
